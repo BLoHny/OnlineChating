@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat</title>
+</head>
+<body>
+<div>
+    <label for="message"></label><input type="text" id="message">
+    <button onclick="send()">Send</button>
+</div>
+<div id="chat"></div>
+
+<script>
+    const ws = new WebSocket("ws://" + window.location.host + "/chat");
+    ws.onmessage = function (event) {
+        const chat = document.getElementById("chat");
+        chat.innerHTML = chat.innerHTML + "<br/>" + event.data;
+    };
+
+    function send() {
+        const message = document.getElementById("message").value;
+        ws.send(message);
+    }
+</script>
+</body>
+</html>
