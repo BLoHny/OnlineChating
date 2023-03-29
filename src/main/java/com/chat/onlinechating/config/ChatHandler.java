@@ -1,5 +1,6 @@
 package com.chat.onlinechating.config;
 
+import com.chat.onlinechating.random.MedievalNameGenerator;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -11,6 +12,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class ChatHandler extends TextWebSocketHandler {
 
     private final List<WebSocketSession> sessions = new CopyOnWriteArrayList<>();
+
+
+    public MedievalNameGenerator me;
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
@@ -26,7 +30,7 @@ public class ChatHandler extends TextWebSocketHandler {
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         for (WebSocketSession webSocketSession : sessions) {
             if (webSocketSession.isOpen()) {
-                webSocketSession.sendMessage(new TextMessage(session.getId() + ": " + message.getPayload()));
+                webSocketSession.sendMessage(new TextMessage( MedievalNameGenerator.surname() + ": " + message.getPayload()));
             }
         }
     }
